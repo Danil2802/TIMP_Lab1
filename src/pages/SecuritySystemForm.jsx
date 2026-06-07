@@ -16,26 +16,26 @@ const SecuritySystemForm = () => {
   }, [id]);
 
   const fetchEvents = async () => {
-    const response = await axios.get('http://localhost:3001/events');
+    const response = await axios.get('http://localhost:5000/events');
     setEvents(response.data);
   };
 
   const fetchSystem = async () => {
-    const response = await axios.get(`http://localhost:3001/securitySystems/${id}`);
+    const response = await axios.get(`http://localhost:5000/securitySystems/${id}`);
     setSystem(response.data);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (id) {
-      await axios.put(`http://localhost:3001/securitySystems/${id}`, system);
-      await axios.post('http://localhost:3001/logs', {
+      await axios.put(`http://localhost:5000/securitySystems/${id}`, system);
+      await axios.post('http://localhost:5000/logs', {
         action: `Отредактирована система безопасности с ID: ${id}`,
         timestamp: new Date().toISOString(),
       });
     } else {
-      const response = await axios.post('http://localhost:3001/securitySystems', system);
-      await axios.post('http://localhost:3001/logs', {
+      const response = await axios.post('http://localhost:5000/securitySystems', system);
+      await axios.post('http://localhost:5000/logs', {
         action: `Добавлена система безопасности с ID: ${response.data.id}`,
         timestamp: new Date().toISOString(),
       });
