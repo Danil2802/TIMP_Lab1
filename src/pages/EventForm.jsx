@@ -14,21 +14,21 @@ const EventForm = () => {
   }, [id]);
 
   const fetchEvent = async () => {
-    const response = await axios.get(`http://localhost:3001/events/${id}`);
+    const response = await axios.get(`http://localhost:5000/events/${id}`);
     setEvent(response.data);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (id) {
-      await axios.put(`http://localhost:3001/events/${id}`, event);
-      await axios.post('http://localhost:3001/logs', {
+      await axios.put(`http://localhost:5000/events/${id}`, event);
+      await axios.post('http://localhost:5000/logs', {
         action: `Отредактировано мероприятие с ID: ${id}`,
         timestamp: new Date().toISOString(),
       });
     } else {
-      const response = await axios.post('http://localhost:3001/events', event);
-      await axios.post('http://localhost:3001/logs', {
+      const response = await axios.post('http://localhost:5000/events', event);
+      await axios.post('http://localhost:5000/logs', {
         action: `Добавлено мероприятие с ID: ${response.data.id}`,
         timestamp: new Date().toISOString(),
       });
