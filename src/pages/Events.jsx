@@ -11,13 +11,13 @@ const Events = () => {
   }, []);
 
   const fetchEvents = async () => {
-    const response = await axios.get('http://localhost:3001/events');
+    const response = await axios.get('http://localhost:5000/events');
     setEvents(response.data);
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:3001/events/${id}`);
-    await axios.post('http://localhost:3001/logs', {
+    await axios.delete(`http://localhost:5000/events/${id}`);
+    await axios.post('http://localhost:5000/logs', {
       action: `Удалено мероприятие с ID: ${id}`,
       timestamp: new Date().toISOString(),
     });
