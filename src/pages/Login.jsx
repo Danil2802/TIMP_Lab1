@@ -11,7 +11,7 @@ const Login = ({ setIsAuthenticated }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get('http://localhost:3001/users', {
+      const response = await axios.get('http://localhost:5000/users', {
         params: { username, password },
       });
       if (response.data.length > 0) {
