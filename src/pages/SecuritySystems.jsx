@@ -13,18 +13,18 @@ const SecuritySystems = () => {
   }, []);
 
   const fetchSystems = async () => {
-    const response = await axios.get('http://localhost:3001/securitySystems');
+    const response = await axios.get('http://localhost:5000/securitySystems');
     setSystems(response.data);
   };
 
   const fetchEvents = async () => {
-    const response = await axios.get('http://localhost:3001/events');
+    const response = await axios.get('http://localhost:5000/events');
     setEvents(response.data);
   };
 
   const handleDelete = async (id) => {
-    await axios.delete(`http://localhost:3001/securitySystems/${id}`);
-    await axios.post('http://localhost:3001/logs', {
+    await axios.delete(`http://localhost:5000/securitySystems/${id}`);
+    await axios.post('http://localhost:5000/logs', {
       action: `Удалена система безопасности с ID: ${id}`,
       timestamp: new Date().toISOString(),
     });
