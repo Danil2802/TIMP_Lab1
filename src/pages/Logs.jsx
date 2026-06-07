@@ -9,7 +9,7 @@ const Logs = () => {
   }, []);
 
   const fetchLogs = async () => {
-    const response = await axios.get('http://localhost:3001/logs');
+    const response = await axios.get('http://localhost:5000/logs');
     setLogs(response.data);
   };
 
