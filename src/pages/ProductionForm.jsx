@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 const ProductionForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   const [production, setProduction] = useState({ name: '', type: '', location: '' });
 
   useEffect(() => {
@@ -21,7 +21,7 @@ const ProductionForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (id) {
       await axios.put(`http://localhost:5000/productions/${id}`, production);
       await axios.post('http://localhost:5000/logs', {
@@ -35,7 +35,7 @@ const ProductionForm = () => {
         timestamp: new Date().toISOString(),
       });
     }
-    navigate('/productions'); 
+    navigate('/productions');
   };
 
   return (
@@ -78,3 +78,4 @@ const ProductionForm = () => {
 };
 
 export default ProductionForm;
+
