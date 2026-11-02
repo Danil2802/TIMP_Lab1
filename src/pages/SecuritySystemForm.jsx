@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 const SecuritySystemForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  
+
   const [system, setSystem] = useState({ name: '', productionId: '', orderNumber: '' });
   const [productions, setProductions] = useState([]);
 
@@ -58,7 +58,7 @@ const SecuritySystemForm = () => {
               required
             />
           </div>
-          
+
           <div>
             <label>Производство:</label>
             <select
@@ -79,6 +79,8 @@ const SecuritySystemForm = () => {
             <label>Порядковый номер:</label>
             <input
               type="number"
+              min="1"
+              step="1"
               value={system.orderNumber || ''}
               onChange={(e) => setSystem({ ...system, orderNumber: e.target.value })}
               required
