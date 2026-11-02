@@ -8,22 +8,29 @@ const Login = ({ setIsAuthenticated }) => {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.get('http://localhost:5000/users', {
-        params: { username, password },
-      });
-      if (response.data.length > 0) {
-        setIsAuthenticated(true);
-        navigate('/events');
-      } else {
-        setError('Неверный логин или пароль');
-      }
-    } catch (err) {
-      setError('Ошибка при входе в систему');
+const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const response = await axios.get('http://localhost:5000/users', {
+      params: { username, password },
+    });
+      
+    if (response.data.length > 0) {
+      const user = response.data[0];
+        
+      localStorage.setItem('userRole', user.role);
+      localStorage.setItem('username', user.username);
+
+      setIsAuthenticated(true);
+        
+      navigate('/productions'); 
+    } else {
+      setError('Неверный логин или пароль');
     }
-  };
+  } catch (err) {
+    setError('Ошибка при входе в систему');
+  }
+};
 
   return (
     <div className="login-container">
