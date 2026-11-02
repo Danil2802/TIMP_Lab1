@@ -2,69 +2,71 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 
-const EventForm = () => {
+const ProductionForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [event, setEvent] = useState({ name: '', date: '', location: '' });
+  
+  const [production, setProduction] = useState({ name: '', type: '', location: '' });
 
   useEffect(() => {
     if (id) {
-      fetchEvent();
+      fetchProduction();
     }
   }, [id]);
 
-  const fetchEvent = async () => {
-    const response = await axios.get(`http://localhost:5000/events/${id}`);
-    setEvent(response.data);
+  const fetchProduction = async () => {
+    const response = await axios.get(`http://localhost:5000/productions/${id}`);
+    setProduction(response.data);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     if (id) {
-      await axios.put(`http://localhost:5000/events/${id}`, event);
+      await axios.put(`http://localhost:5000/productions/${id}`, production);
       await axios.post('http://localhost:5000/logs', {
-        action: `Отредактировано мероприятие с ID: ${id}`,
+        action: `Отредактировано производство с ID: ${id}`,
         timestamp: new Date().toISOString(),
       });
     } else {
-      const response = await axios.post('http://localhost:5000/events', event);
+      const response = await axios.post('http://localhost:5000/productions', production);
       await axios.post('http://localhost:5000/logs', {
-        action: `Добавлено мероприятие с ID: ${response.data.id}`,
+        action: `Добавлено производство с ID: ${response.data.id}`,
         timestamp: new Date().toISOString(),
       });
     }
-    navigate('/events');
+    navigate('/productions'); 
   };
 
   return (
     <div className="form-container">
       <div className="form-content">
-        <h1>{id ? 'Редактировать мероприятие' : 'Добавить мероприятие'}</h1>
+        <h1>{id ? 'Редактировать производство' : 'Добавить производство'}</h1>
         <form onSubmit={handleSubmit}>
           <div>
             <label>Название:</label>
             <input
               type="text"
-              value={event.name}
-              onChange={(e) => setEvent({ ...event, name: e.target.value })}
+              value={production.name}
+              onChange={(e) => setProduction({ ...production, name: e.target.value })}
               required
             />
           </div>
           <div>
-            <label>Дата:</label>
-            <input
-              type="date"
-              value={event.date}
-              onChange={(e) => setEvent({ ...event, date: e.target.value })}
-              required
-            />
-          </div>
-          <div>
-            <label>Место:</label>
+            <label>Тип продукции (например, Молочное):</label>
             <input
               type="text"
-              value={event.location}
-              onChange={(e) => setEvent({ ...event, location: e.target.value })}
+              value={production.type}
+              onChange={(e) => setProduction({ ...production, type: e.target.value })}
+              required
+            />
+          </div>
+          <div>
+            <label>Локация:</label>
+            <input
+              type="text"
+              value={production.location}
+              onChange={(e) => setProduction({ ...production, location: e.target.value })}
               required
             />
           </div>
@@ -75,4 +77,4 @@ const EventForm = () => {
   );
 };
 
-export default EventForm;
+export default ProductionForm;
