@@ -5,19 +5,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 const SecuritySystemForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [system, setSystem] = useState({ name: '', eventId: '' });
-  const [events, setEvents] = useState([]);
+  
+  const [system, setSystem] = useState({ name: '', productionId: '', orderNumber: '' });
+  const [productions, setProductions] = useState([]);
 
   useEffect(() => {
-    fetchEvents();
+    fetchProductions();
     if (id) {
       fetchSystem();
     }
   }, [id]);
 
-  const fetchEvents = async () => {
-    const response = await axios.get('http://localhost:5000/events');
-    setEvents(response.data);
+  const fetchProductions = async () => {
+    const response = await axios.get('http://localhost:5000/productions');
+    setProductions(response.data);
   };
 
   const fetchSystem = async () => {
@@ -49,7 +50,7 @@ const SecuritySystemForm = () => {
         <h1>{id ? 'Редактировать систему безопасности' : 'Добавить систему безопасности'}</h1>
         <form onSubmit={handleSubmit}>
           <div>
-            <label>Название:</label>
+            <label>Название системы:</label>
             <input
               type="text"
               value={system.name}
@@ -57,21 +58,33 @@ const SecuritySystemForm = () => {
               required
             />
           </div>
+          
           <div>
-            <label>Мероприятие:</label>
+            <label>Производство:</label>
             <select
-              value={system.eventId}
-              onChange={(e) => setSystem({ ...system, eventId: e.target.value })}
+              value={system.productionId || ''}
+              onChange={(e) => setSystem({ ...system, productionId: e.target.value })}
               required
             >
-              <option value="">Выберите мероприятие</option>
-              {events.map((event) => (
-                <option key={event.id} value={event.id}>
-                  {event.name} (ID: {event.id})
+              <option value="">Выберите производство</option>
+              {productions.map((prod) => (
+                <option key={prod.id} value={prod.id}>
+                  {prod.name} (ID: {prod.id})
                 </option>
               ))}
             </select>
           </div>
+
+          <div>
+            <label>Порядковый номер:</label>
+            <input
+              type="number"
+              value={system.orderNumber || ''}
+              onChange={(e) => setSystem({ ...system, orderNumber: e.target.value })}
+              required
+            />
+          </div>
+
           <button type="submit">{id ? 'Сохранить' : 'Добавить'}</button>
         </form>
       </div>
