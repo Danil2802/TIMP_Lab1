@@ -21,19 +21,19 @@ const Productions = () => {
     if (!isAdmin) return;
 
     await axios.delete(`http://localhost:5000/productions/${id}`);
-    
+
     await axios.post('http://localhost:5000/logs', {
       action: `Удалено производство с ID: ${id}`,
       timestamp: new Date().toISOString(),
     });
-    
+
     fetchProductions();
   };
 
   return (
     <div className="container">
       <h1>Производства пищевой промышленности</h1>
-      
+
       {isAdmin && (
         <button onClick={() => navigate('/productions/add')}>
           Добавить производство
@@ -43,7 +43,7 @@ const Productions = () => {
       <table>
         <thead>
           <tr>
-            <th>ID</th>
+            {isAdmin && <th>ID</th>}
             <th>Название</th>
             <th>Тип продукции</th>
             <th>Локация</th>
@@ -53,11 +53,11 @@ const Productions = () => {
         <tbody>
           {productions.map((prod) => (
             <tr key={prod.id}>
-              <td>{prod.id}</td>
+              {isAdmin && <td>{prod.id}</td>}
               <td>{prod.name}</td>
               <td>{prod.type}</td>
               <td>{prod.location}</td>
-              
+
               {isAdmin && (
                 <td>
                   <button onClick={() => navigate(`/productions/edit/${prod.id}`)}>
@@ -77,3 +77,5 @@ const Productions = () => {
 };
 
 export default Productions;
+
+
