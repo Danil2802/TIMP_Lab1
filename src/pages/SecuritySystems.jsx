@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 const SecuritySystems = () => {
   const [systems, setSystems] = useState([]);
-  const [productions, setProductions] = useState([]); 
+  const [productions, setProductions] = useState([]);
   const navigate = useNavigate();
 
   const isAdmin = localStorage.getItem('userRole') === 'admin';
@@ -26,7 +26,7 @@ const SecuritySystems = () => {
 
   const handleDelete = async (id) => {
     if (!isAdmin) return;
-    
+
     await axios.delete(`http://localhost:5000/securitySystems/${id}`);
     await axios.post('http://localhost:5000/logs', {
       action: `Удалена система безопасности с ID: ${id}`,
@@ -38,7 +38,7 @@ const SecuritySystems = () => {
   return (
     <div className="container">
       <h1>Системы безопасности</h1>
-      
+
       {isAdmin && (
         <button onClick={() => navigate('/security-systems/add')}>Добавить систему</button>
       )}
@@ -46,7 +46,7 @@ const SecuritySystems = () => {
       <table>
         <thead>
           <tr>
-            <th>ID</th>
+            {isAdmin && <th>ID</th>}
             <th>Название</th>
             <th>Производство</th>
             <th>Порядковый номер</th>
@@ -56,13 +56,13 @@ const SecuritySystems = () => {
         <tbody>
           {systems.map((system) => (
             <tr key={system.id}>
-              <td>{system.id}</td>
+              {isAdmin && <td>{system.id}</td>}
               <td>{system.name}</td>
-              
+
               <td>{productions.find((p) => p.id === system.productionId)?.name || 'Не указано'}</td>
-              
+
               <td>{system.orderNumber}</td>
-              
+
               {isAdmin && (
                 <td>
                   <button onClick={() => navigate(`/security-systems/edit/${system.id}`)}>Редактировать</button>
@@ -78,3 +78,8 @@ const SecuritySystems = () => {
 };
 
 export default SecuritySystems;
+
+
+
+
+
