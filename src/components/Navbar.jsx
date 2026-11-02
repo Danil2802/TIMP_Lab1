@@ -15,7 +15,9 @@ const Navbar = ({ setIsAuthenticated }) => {
   return (
     <nav style={{ display: 'flex', gap: '15px', padding: '10px', background: '#eee', alignItems: 'center' }}>
       <Link to="/productions">Производства</Link>
-      <Link to="/security-systems">Системы безопасности</Link>
+      
+      {isAdmin && <Link to="/security-systems">Системы безопасности</Link>}
+      
       {isAdmin && <Link to="/logs">Логи изменений</Link>}
       
       <div style={{ marginLeft: 'auto' }}>
@@ -25,4 +27,5 @@ const Navbar = ({ setIsAuthenticated }) => {
     </nav>
   );
 };
+
 export default Navbar;
