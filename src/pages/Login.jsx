@@ -14,16 +14,16 @@ const handleLogin = async (e) => {
     const response = await axios.get('http://localhost:5000/users', {
       params: { username, password },
     });
-      
+
     if (response.data.length > 0) {
       const user = response.data[0];
-        
+
       localStorage.setItem('userRole', user.role);
       localStorage.setItem('username', user.username);
 
       setIsAuthenticated(true);
-        
-      navigate('/productions'); 
+
+      navigate('/productions');
     } else {
       setError('Неверный логин или пароль');
     }
@@ -64,3 +64,7 @@ const handleLogin = async (e) => {
 };
 
 export default Login;
+
+
+
+
