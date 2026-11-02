@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router-dom';
 
 const SecuritySystems = () => {
   const [systems, setSystems] = useState([]);
-  const [events, setEvents] = useState([]);
+  const [productions, setProductions] = useState([]); 
   const navigate = useNavigate();
+
+  const isAdmin = localStorage.getItem('userRole') === 'admin';
 
   useEffect(() => {
     fetchSystems();
-    fetchEvents();
+    fetchProductions();
   }, []);
 
   const fetchSystems = async () => {
@@ -17,12 +19,14 @@ const SecuritySystems = () => {
     setSystems(response.data);
   };
 
-  const fetchEvents = async () => {
-    const response = await axios.get('http://localhost:5000/events');
-    setEvents(response.data);
+  const fetchProductions = async () => {
+    const response = await axios.get('http://localhost:5000/productions');
+    setProductions(response.data);
   };
 
   const handleDelete = async (id) => {
+    if (!isAdmin) return;
+    
     await axios.delete(`http://localhost:5000/securitySystems/${id}`);
     await axios.post('http://localhost:5000/logs', {
       action: `Удалена система безопасности с ID: ${id}`,
@@ -34,15 +38,19 @@ const SecuritySystems = () => {
   return (
     <div className="container">
       <h1>Системы безопасности</h1>
-      <button onClick={() => navigate('/security-systems/add')}>Добавить систему</button>
+      
+      {isAdmin && (
+        <button onClick={() => navigate('/security-systems/add')}>Добавить систему</button>
+      )}
+
       <table>
         <thead>
           <tr>
             <th>ID</th>
             <th>Название</th>
-            <th>Мероприятие</th>
+            <th>Производство</th>
             <th>Порядковый номер</th>
-            <th>Действия</th>
+            {isAdmin && <th>Действия</th>}
           </tr>
         </thead>
         <tbody>
@@ -50,12 +58,17 @@ const SecuritySystems = () => {
             <tr key={system.id}>
               <td>{system.id}</td>
               <td>{system.name}</td>
-              <td>{events.find((e) => e.id === system.eventId)?.name}</td>
+              
+              <td>{productions.find((p) => p.id === system.productionId)?.name || 'Не указано'}</td>
+              
               <td>{system.orderNumber}</td>
-              <td>
-                <button onClick={() => navigate(`/security-systems/edit/${system.id}`)}>Редактировать</button>
-                <button onClick={() => handleDelete(system.id)}>Удалить</button>
-              </td>
+              
+              {isAdmin && (
+                <td>
+                  <button onClick={() => navigate(`/security-systems/edit/${system.id}`)}>Редактировать</button>
+                  <button onClick={() => handleDelete(system.id)}>Удалить</button>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
