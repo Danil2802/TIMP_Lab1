@@ -1,8 +1,3 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './pages/Login';
-import Productions from './pages/Productions';
-import SecuritySystems from './pages/SecuritySystems';
 import Logs from './pages/Logs';
 import ProductionForm from './pages/ProductionForm';
 import SecuritySystemForm from './pages/SecuritySystemForm';
@@ -19,14 +14,14 @@ function App() {
   return (
     <Router>
       {isAuthenticated && <Navbar setIsAuthenticated={setIsAuthenticated} />}
-      
+
       <Routes>
         <Route path="/login" element={
           !isAuthenticated ? <Login setIsAuthenticated={setIsAuthenticated} /> : <Navigate to="/productions" />
         } />
 
         <Route path="/productions" element={isAuthenticated ? <Productions /> : <Navigate to="/login" />} />
-        
+
         <Route path="/productions/add" element={isAuthenticated && isAdmin ? <ProductionForm /> : <Navigate to="/productions" />} />
         <Route path="/productions/edit/:id" element={isAuthenticated && isAdmin ? <ProductionForm /> : <Navigate to="/productions" />} />
 
@@ -37,7 +32,7 @@ function App() {
         <Route path="/logs" element={isAuthenticated && isAdmin ? <Logs /> : <Navigate to="/productions" />} />
 
         <Route path="/" element={<Navigate to={isAuthenticated ? "/productions" : "/login"} />} />
-        
+
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>
@@ -45,3 +40,8 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
