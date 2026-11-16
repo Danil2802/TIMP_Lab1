@@ -13,27 +13,30 @@ const Productions = () => {
   }, []);
 
   const fetchProductions = async () => {
-    const response = await axios.get('http://localhost:5000/productions');
+    // ЗАМЕНА 1
+    const response = await axios.get('http://217.71.129.139:6420/productions');
     setProductions(response.data);
   };
 
   const handleDelete = async (id) => {
     if (!isAdmin) return;
 
-    await axios.delete(`http://localhost:5000/productions/${id}`);
-
-    await axios.post('http://localhost:5000/logs', {
+    // ЗАМЕНА 2
+    await axios.delete(`http://217.71.129.139:6420/productions/${id}`);
+    
+    // ЗАМЕНА 3
+    await axios.post('http://217.71.129.139:6420/logs', {
       action: `Удалено производство с ID: ${id}`,
       timestamp: new Date().toISOString(),
     });
-
+    
     fetchProductions();
   };
 
   return (
     <div className="container">
       <h1>Производства пищевой промышленности</h1>
-
+      
       {isAdmin && (
         <button onClick={() => navigate('/productions/add')}>
           Добавить производство
@@ -57,7 +60,7 @@ const Productions = () => {
               <td>{prod.name}</td>
               <td>{prod.type}</td>
               <td>{prod.location}</td>
-
+              
               {isAdmin && (
                 <td>
                   <button onClick={() => navigate(`/productions/edit/${prod.id}`)}>
@@ -77,5 +80,4 @@ const Productions = () => {
 };
 
 export default Productions;
-
 
