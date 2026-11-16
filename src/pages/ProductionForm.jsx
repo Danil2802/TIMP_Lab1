@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 const ProductionForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  
   const [production, setProduction] = useState({ name: '', type: '', location: '' });
 
   useEffect(() => {
@@ -15,27 +15,32 @@ const ProductionForm = () => {
   }, [id]);
 
   const fetchProduction = async () => {
-    const response = await axios.get(`http://localhost:5000/productions/${id}`);
+    // ИЗМЕНЕНО ЗДЕСЬ
+    const response = await axios.get(`http://217.71.129.139:6420/productions/${id}`);
     setProduction(response.data);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     if (id) {
-      await axios.put(`http://localhost:5000/productions/${id}`, production);
-      await axios.post('http://localhost:5000/logs', {
+      // ИЗМЕНЕНО ЗДЕСЬ
+      await axios.put(`http://217.71.129.139:6420/productions/${id}`, production);
+      // ИЗМЕНЕНО ЗДЕСЬ
+      await axios.post('http://217.71.129.139:6420/logs', {
         action: `Отредактировано производство с ID: ${id}`,
         timestamp: new Date().toISOString(),
       });
     } else {
-      const response = await axios.post('http://localhost:5000/productions', production);
-      await axios.post('http://localhost:5000/logs', {
+      // ИЗМЕНЕНО ЗДЕСЬ
+      const response = await axios.post('http://217.71.129.139:6420/productions', production);
+      // ИЗМЕНЕНО ЗДЕСЬ
+      await axios.post('http://217.71.129.139:6420/logs', {
         action: `Добавлено производство с ID: ${response.data.id}`,
         timestamp: new Date().toISOString(),
       });
     }
-    navigate('/productions');
+    navigate('/productions'); 
   };
 
   return (
@@ -78,4 +83,3 @@ const ProductionForm = () => {
 };
 
 export default ProductionForm;
-
