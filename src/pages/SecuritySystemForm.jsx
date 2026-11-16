@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 const SecuritySystemForm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  
   const [system, setSystem] = useState({ name: '', productionId: '', orderNumber: '' });
   const [productions, setProductions] = useState([]);
 
@@ -17,26 +17,32 @@ const SecuritySystemForm = () => {
   }, [id]);
 
   const fetchProductions = async () => {
-    const response = await axios.get('http://localhost:5000/productions');
+    // ЗАМЕНА 1
+    const response = await axios.get('http://217.71.129.139:6420/productions');
     setProductions(response.data);
   };
 
   const fetchSystem = async () => {
-    const response = await axios.get(`http://localhost:5000/securitySystems/${id}`);
+    // ЗАМЕНА 2
+    const response = await axios.get(`http://217.71.129.139:6420/securitySystems/${id}`);
     setSystem(response.data);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (id) {
-      await axios.put(`http://localhost:5000/securitySystems/${id}`, system);
-      await axios.post('http://localhost:5000/logs', {
+      // ЗАМЕНА 3
+      await axios.put(`http://217.71.129.139:6420/securitySystems/${id}`, system);
+      // ЗАМЕНА 4
+      await axios.post('http://217.71.129.139:6420/logs', {
         action: `Отредактирована система безопасности с ID: ${id}`,
         timestamp: new Date().toISOString(),
       });
     } else {
-      const response = await axios.post('http://localhost:5000/securitySystems', system);
-      await axios.post('http://localhost:5000/logs', {
+      // ЗАМЕНА 5
+      const response = await axios.post('http://217.71.129.139:6420/securitySystems', system);
+      // ЗАМЕНА 6
+      await axios.post('http://217.71.129.139:6420/logs', {
         action: `Добавлена система безопасности с ID: ${response.data.id}`,
         timestamp: new Date().toISOString(),
       });
@@ -58,7 +64,7 @@ const SecuritySystemForm = () => {
               required
             />
           </div>
-
+          
           <div>
             <label>Производство:</label>
             <select
